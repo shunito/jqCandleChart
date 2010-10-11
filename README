@@ -1,0 +1,7 @@
+- <canvas> Candle Chart -
+	Javascriptと<canvas>でローソク足を表示します。
+	jQueryのプラグインとして動作するように調整中。
+
+	Author: shunsuke Ito: shunsuke.ito@gmail.com
+	github: http://github.com/shunito/jqCandleChart/
+	

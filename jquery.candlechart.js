@@ -55,7 +55,7 @@
       ctx.lineTo( _ajustXY(d * cdStage + shinOffsetX) , _ajustXY(chHeight - loP + st.ofY ));
       ctx.stroke();
       ctx.lineWidth = 1;
-      
+
       // 終値が初値より高ければ白、安ければ黒で塗りつぶし
       if( stP < enP ) { ctx.fillStyle = st.cdUpColor; }
       else { ctx.fillStyle = st.cdDownColor; }
@@ -76,7 +76,7 @@
     // 横罫線の描画
     var _writeScale = function(ctx) {
       var st = settings;
-      
+
       // 罫線の数字の切りを良くする（変な処理だと僕も思うよ）
       var bline = Math.floor(st.scale/st.liNum).toString();
       var p = bline.charAt(0);
@@ -84,7 +84,7 @@
       for(var i=1; i<l; i++) {
         p += "0";
       }
-      
+
       p = parseInt(p,10);
       ctx.strokeStyle = st.liColor;
       ctx.textAlign ="right";
@@ -101,8 +101,7 @@
         ctx.strokeText( p*i , st.ofX - 4, y);
       }
       ctx.strokeStyle = st.cdLineColor;
-      
-    }
+    };
 
     // <canvas>の初期化
     var _init = function (canvas) {
@@ -111,12 +110,12 @@
       $(canvas).css("height", st.height + "px");
       $(canvas).attr("width", st.width);
       $(canvas).attr("height", st.height);
-      
+
       // 背景塗りつぶし
       var ctx = canvas.getContext('2d');
       ctx.fillStyle = st.bgColor;
       ctx.fillRect(0, 0, st.width, st.height);
-      
+
       // 基本枠線
       ctx.strokeStyle = st.cdLineColor;
       ctx.lineWidth = 1;
@@ -125,11 +124,11 @@
       ctx.lineTo( _ajustXY(st.ofX), _ajustXY( st.height - st.ofY) );
       ctx.lineTo( _ajustXY(st.width - st.ofX), _ajustXY(st.height - st.ofY));
       ctx.stroke();
-      
+
       // 横罫線
       _writeScale(ctx);
     };
-    
+
     // 出来高のバーを一本表示
     var _writeVolumeBar = function(ctx, v, d) {
       var st = settings;
@@ -138,7 +137,7 @@
         _ajustXY(d * cdStage + cdOffsetX), _ajustXY( st.height - st.ofY-1) ,
             barWidth, _ajustXY(v) *-1 );
       return v;
-    }    
+    };
 
     // 出来高の描画
     var _writeVolume = function(canvas,data) {
@@ -175,13 +174,13 @@
         _init(this);
       });
       return elm;
-    }
+    };
 
     //要素を一個ずつ処理
     elm.each(function() {
       _init(this);
     });
-    
+
     //method chain
     return this;
   };
