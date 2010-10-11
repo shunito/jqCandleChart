@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>JQuery ローソク足</title>
+	<link href="simple.css" rel="stylesheet" type="text/css" media="screen">
+	<script src="jquery.js" type="text/javascript"></script>
+	<script src="jquery.candlechart.js" type="text/javascript"></script>
+	<script type="text/javascript">
+    $(function(){
+    
+      // 始値、終値、高値、安値
+      var tickData =[
+        [100,150,80,200],
+        [155,160,145,160],
+        [160,220,165,240],
+        [220,150,145,220],
+        [150,120,110,160],
+        [200,200,195,220],
+        [120,90,75,130],
+        [90,150,90,160]
+      ];
+    
+//      var candle1 = $("#cv01").candleChart({param:"test1"}).hide().ccVolume([100,200,150,200,50,200,100,150]);
+      var candle1 = $("#cv01").candleChart({param:"test1"}).ccVolume([100,200,150,200,50,200,100,150]).ccTick(tickData).hide();
+//      candle1.volume([100,200,150,200,50,200,100,150]);
+//      candle1.ccTick(tickData);
+      candle1.show("slow");
+
+
+    });
+	</script>
+</head>
+
+<body>
+<div id="page">
+<header>
+	<h1 id="siteName">JQuery ローソク足</h1>
+</header>
+
+<div id="contents">
+<section id="main">
+<article>
+<h1>テスト</h1>
+<div class="stage">
+<canvas width="400" height="300px" id="cv01"></canvas>
+</div>
+</article>
+</section>
+<aside></aside>
+</div>
+
+<footer>
+	<p class="copyright">Copyright &copy; Shunsuke Ito All Rights Reserved.</p>
+</footer>
+</div>
+</body>
+</html>
