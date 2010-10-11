@@ -63,7 +63,7 @@
       ctx.fillRect( _ajustXY(d * cdStage + cdOffsetX), _ajustXY(chHeight-stP + st.ofY) , st.cdWidth, stP-enP );
       ctx.strokeRect( _ajustXY(d * cdStage + cdOffsetX), _ajustXY(chHeight-stP + st.ofY) , st.cdWidth, stP-enP );
     };
-    
+
     // ローソク足の描画
     var _writeCandles = function(canvas,data) {
       var ctx = canvas.getContext('2d');
