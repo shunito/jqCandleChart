@@ -67,18 +67,23 @@
                                         };
                         }
                         var microT = (t - segNum/numSegments) * numSegments;
-                        var result = {
-                                left: interpolate(microT,
+                        
+                        var x = interpolate(microT,
                                                 seq[segNum][0],
                                                 seq[segNum+1][0],
                                                 seq[segNum+2][0],
-                                                seq[segNum+3][0]) + "px",
-                                top: interpolate(microT,
+                                                seq[segNum+3][0]);
+                        var y = interpolate(microT,
                                                 seq[segNum][1],
                                                 seq[segNum+1][1],
                                                 seq[segNum+2][1],
-                                                seq[segNum+3][1]) + "px"
-                                };
+                                                seq[segNum+3][1]);
+                        var result = {
+                              left: x + "px",
+                              top: y + "px",
+                              x: x,
+                              y: y
+                          };
                         return result;
                 };
                 return res;

@@ -175,21 +175,13 @@
     var pos= spline.getPos(0);
 
     // delete "px"
-    px = pos.left;
-    px = parseInt(px.substr(0,px.length-2),10);
-    py = pos.top;
-    py = parseInt(py.substr(0,py.length-2),10);
-    ctx.moveTo(px,py);
+    ctx.moveTo(pos.x,pos.y);
 
     for(var i=0; i< l; i++) {
       for(var j=0; j< dotsPerSeg; j++){
         var t = (i + j/dotsPerSeg) / points.length;
         var pos = spline.getPos(t);
-        px = pos.left;
-        px = parseInt(px.substr(0,px.length-2),10);
-        py = pos.top;
-        py = parseInt(py.substr(0,py.length-2),10);
-        ctx.lineTo(px, py);
+        ctx.lineTo(pos.x, pos.y);
       }
     }
     ctx.stroke();
