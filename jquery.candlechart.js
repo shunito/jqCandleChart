@@ -225,7 +225,7 @@
   // $(elm).ccVolume([volumedata])
   jQuery.fn.ccVolume = function(data) {
     var elm = this;
-    if(!data){ return; }
+    if(!data){ return this; }
 
     // 出来高のバーを一本表示
     var _writeVolumeBar = function(ctx, v, d) {
@@ -264,7 +264,7 @@
   // $(elm).ccTick([volumedata])
   jQuery.fn.ccTick = function(data) {
     var elm = this;
-    if(!data){ return; }
+    if(!data){ return this; }
 
     //要素を一個ずつ処理
     elm.each(function() {
@@ -286,7 +286,7 @@
   // $(elm).ccMA([volumedata],linecolor)
   jQuery.fn.ccMA = function(data,color) {
     var elm = this;
-    if(!data){ return; }
+    if(!data){ return this; }
 
     //要素を一個ずつ処理
     elm.each(function() {
