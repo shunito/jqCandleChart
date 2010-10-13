@@ -153,7 +153,6 @@
   var _writeMovingAvg = function(canvas,data,color) {
     var ctx = canvas.getContext('2d');
     if(!jQuery.crSpline) {
-//      console.log("please load crSpline");
       return;
     }
 
@@ -165,7 +164,6 @@
       px = i* cdStage+ shinOffsetX;
       py = Math.floor( chHeight - data[i]* param) + st.ofY;
       points.push([px,py]);
-//      console.log(px,py);
     }
     var spline = jQuery.crSpline.buildSequence(points);
 
@@ -173,8 +171,6 @@
     ctx.strokeStyle = color ? color : st.maColor;
     ctx.beginPath();
     var pos= spline.getPos(0);
-
-    // delete "px"
     ctx.moveTo(pos.x,pos.y);
 
     for(var i=0; i< l; i++) {
@@ -285,6 +281,7 @@
   // 移動平均線の表示
   // use jquery crSpline
   //   http://github.com/MmmCurry/jquery.crSpline
+  //   fork -> http://github.com/shunito/jquery.crSpline
   // public method
   // $(elm).ccMA([volumedata],linecolor)
   jQuery.fn.ccMA = function(data,color) {
