@@ -1,5 +1,5 @@
 /*
- * jQuery Candlestick Chart
+ * jQuery Candlestick Chart v0.1
  * http://github.com/shunito/jqCandleChart
  *
  * Copyright 2010 Shunsuke Ito
