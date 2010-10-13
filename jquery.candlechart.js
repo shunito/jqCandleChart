@@ -1,5 +1,7 @@
 /*
  * jQuery Candlestick Chart
+ * http://github.com/shunito/jqCandleChart
+ *
  * Copyright 2010 Shunsuke Ito
  * Released under the MIT and GPL licenses.
  */
@@ -21,7 +23,8 @@
     if( p%2 === 0 ) { return ( p - 0.5 ); }
     return p;
   };
-  
+
+  // JavaScript:The Good Parts
   var is_array = function(value) {
     return(
       value && 
@@ -150,6 +153,7 @@
       }
   };
 
+  // スプライン補間で移動平均線の描画
   var _writeMovingAvg = function(canvas,data,color) {
     var ctx = canvas.getContext('2d');
     if(!jQuery.crSpline) {
@@ -186,7 +190,7 @@
   // Initialize Candlestick Chart
   // チャートの初期化
   // public method
-  // $(elm).candleChart([[tickdata]],{options})
+  // Usage: $(elm).candleChart([[tickdata]],{options})
   jQuery.fn.candleChart = function(data,options) {
     var elm = this;
     
@@ -222,7 +226,7 @@
   // write Trading volume
   // 出来高の表示
   // public method
-  // $(elm).ccVolume([volumedata])
+  // Usage: $(elm).ccVolume([volumedata])
   jQuery.fn.ccVolume = function(data) {
     var elm = this;
     if(!data){ return this; }
@@ -261,7 +265,7 @@
   // write (only) candlestick
   // ローソク足の描画
   // public method
-  // $(elm).ccTick([volumedata])
+  // Usage: $(elm).ccTick([volumedata])
   jQuery.fn.ccTick = function(data) {
     var elm = this;
     if(!data){ return this; }
@@ -283,7 +287,7 @@
   //   http://github.com/MmmCurry/jquery.crSpline
   //   fork -> http://github.com/shunito/jquery.crSpline
   // public method
-  // $(elm).ccMA([volumedata],linecolor)
+  // Usage: $(elm).ccMA([volumedata],linecolor)
   jQuery.fn.ccMA = function(data,color) {
     var elm = this;
     if(!data){ return this; }
@@ -302,7 +306,7 @@
   // clear chart
   // チャートの初期化
   // public method
-  // $(elm).ccClear()
+  // Usage: $(elm).ccClear()
   jQuery.fn.ccClear = function() {
     var elm = this;
 
