@@ -1,4 +1,4 @@
-- <canvas> Candle Chart -
+- jQuery plugin Candlestick Chart -
 	Javascriptと<canvas>でローソク足を表示します。
 	jQueryのプラグインとして動作するように調整中。
 
