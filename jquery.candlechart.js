@@ -47,6 +47,7 @@
       'cdDownColor': "#000",
       'voColor': "#CCC",
       'liColor': "#CCC",
+      'maColor': "#00F",
       'liNum': 5,
       'scale' : 250
       }, options);
@@ -149,6 +150,51 @@
       }
   };
 
+  var _writeMovingAvg = function(canvas,data,color) {
+    var ctx = canvas.getContext('2d');
+    if(!jQuery.crSpline) {
+//      console.log("please load crSpline");
+      return;
+    }
+
+    var l= data.length;
+    var dotsPerSeg = cdStage;
+    var points = [];
+    var px,py;
+    for(var i=0; i< l; i++) {
+      px = i* cdStage+ shinOffsetX;
+      py = Math.floor( chHeight - data[i]* param) + st.ofY;
+      points.push([px,py]);
+//      console.log(px,py);
+    }
+    var spline = jQuery.crSpline.buildSequence(points);
+
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = color ? color : st.maColor;
+    ctx.beginPath();
+    var pos= spline.getPos(0);
+
+    // delete "px"
+    px = pos.left;
+    px = parseInt(px.substr(0,px.length-2),10);
+    py = pos.top;
+    py = parseInt(py.substr(0,py.length-2),10);
+    ctx.moveTo(px,py);
+
+    for(var i=0; i< l; i++) {
+      for(var j=0; j< dotsPerSeg; j++){
+        var t = (i + j/dotsPerSeg) / points.length;
+        var pos = spline.getPos(t);
+        px = pos.left;
+        px = parseInt(px.substr(0,px.length-2),10);
+        py = pos.top;
+        py = parseInt(py.substr(0,py.length-2),10);
+        ctx.lineTo(px, py);
+      }
+    }
+    ctx.stroke();
+  };
+
   // Initialize Candlestick Chart
   // チャートの初期化
   // public method
@@ -236,6 +282,27 @@
     elm.each(function() {
       if($(this).attr("tagName")==="CANVAS") {
         _writeCandles(this,data);
+      }
+    });
+
+    //method chain
+    return this;
+  };
+
+  // write moving average
+  // 移動平均線の表示
+  // use jquery crSpline
+  //   http://github.com/MmmCurry/jquery.crSpline
+  // public method
+  // $(elm).ccMA([volumedata],linecolor)
+  jQuery.fn.ccMA = function(data,color) {
+    var elm = this;
+    if(!data){ return; }
+
+    //要素を一個ずつ処理
+    elm.each(function() {
+      if($(this).attr("tagName")==="CANVAS") {
+        _writeMovingAvg(this,data,color);
       }
     });
 
