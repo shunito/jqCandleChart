@@ -52,12 +52,13 @@
       'liColor': "#CCC",
       'maColor': "#00F",
       'liNum': 5,
-      'scale' : 250
+      'upper' : 250,
+      'lower' : 0
       }, options);
 
     // 座標スケールの変換準備（縦表示領域とスケールの比を求める）
     chHeight = st.height - st.ofY*2;
-    param = chHeight / st.scale;
+    param = chHeight / (st.upper  - st.lower);
 
     // ローソクの幅から芯や出来高の幅、間隔を計算
     shinWidth = Math.floor(st.cdWidth /3);
@@ -70,15 +71,10 @@
   // 横罫線の描画
   var _writeScale = function(ctx) {
   
-    // 罫線の数字の切りを良くする（変な処理だと僕も思うよ）
-    var bline = Math.floor(st.scale/st.liNum).toString();
-    var p = bline.charAt(0);
-    var l = bline.length;
-    for(var i=1; i<l; i++) {
-      p += "0";
-    }
+    // 罫線の幅を計算
+    // 上限、下限の幅を罫線数で割る
+    var p = Math.floor((st.upper-st.lower)/st.liNum);
 
-    p = parseInt(p,10);
     ctx.strokeStyle = st.liColor;
     ctx.textAlign ="right";
     ctx.textBaseline ="middle";
@@ -89,10 +85,9 @@
       ctx.moveTo( _ajustXY(st.ofX+1) , y );
       ctx.lineTo( _ajustXY(st.width-st.ofX) , y );
       ctx.stroke();
-      // 数字
-      ctx.strokeText( p*i , st.ofX - 4, y);
+      // 罫線部分の値
+      ctx.strokeText( p*i + st.lower, st.ofX - 4, y);
     }
-    ctx.strokeStyle = st.cdLineColor;
   };
 
   // <canvas>の初期化
@@ -122,10 +117,10 @@
 
   // ローソク一本描く
   var _writeCandle = function(ctx,s,e,h,l,d) {
-      var stP = s * param; // 初値
-      var enP = e * param; // 終値
-      var hiP = h * param; // 高値
-      var loP = l * param; // 安値
+      var stP = (s - st.lower) * param; // 初値
+      var enP = (e - st.lower) * param; // 終値
+      var hiP = (h - st.lower) * param; // 高値
+      var loP = (l - st.lower) * param; // 安値
 
       // 芯を描画
       ctx.lineWidth = shinWidth;
