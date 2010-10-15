@@ -75,28 +75,33 @@
     // 上限、下限の幅を罫線数で割る
     var p = Math.floor((st.upper-st.lower)/st.liNum);
 
-    ctx.strokeStyle = st.liColor;
+  	// Font Setting
     ctx.textAlign ="right";
     ctx.textBaseline ="middle";
-    l= st.liNum;
+    ctx.font = "normal 100 10px/2 Unknown Font, sans-serif";
+    
+    var l = st.liNum;
     for(var i =1; i <= l; i++) {
       ctx.beginPath();
       var y = _ajustXY( st.height - ( p * i * param ) - st.ofY );
       ctx.moveTo( _ajustXY(st.ofX+1) , y );
       ctx.lineTo( _ajustXY(st.width-st.ofX) , y );
+      ctx.strokeStyle = st.liColor;
       ctx.stroke();
+
       // 罫線部分の値
-      ctx.strokeText( p*i + st.lower, st.ofX - 4, y);
+      ctx.strokeStyle = st.cdLineColor;
+      ctx.strokeText( p*i + st.lower, st.ofX - 4, y, st.ofX);
     }
   };
 
   // <canvas>の初期化
   var _init = function (canvas) {
     var ctx = canvas.getContext('2d');
-    $(canvas).css("width", st.width + "px");
-    $(canvas).css("height", st.height + "px");
-    $(canvas).attr("width", st.width);
-    $(canvas).attr("height", st.height);
+    jQuery(canvas).css("width", st.width + "px");
+    jQuery(canvas).css("height", st.height + "px");
+    jQuery(canvas).attr("width", st.width);
+    jQuery(canvas).attr("height", st.height);
 
     // 背景塗りつぶし
     ctx.fillStyle = st.bgColor;
@@ -139,8 +144,8 @@
       ctx.strokeRect( _ajustXY(d * cdStage + cdOffsetX), _ajustXY(chHeight-stP + st.ofY) , st.cdWidth, stP-enP );
     };
 
-    // ローソク足の描画
-    var _writeCandles = function(canvas,data) {
+  // ローソク足の描画
+  var _writeCandles = function(canvas,data) {
       var ctx = canvas.getContext('2d');
       var l = data.length;
       for(var i = 0;i < l; i++){
@@ -185,7 +190,7 @@
   // Initialize Candlestick Chart
   // チャートの初期化
   // public method
-  // Usage: $(elm).candleChart([[tickdata]],{options})
+  // Usage: jQuery(elm).candleChart([[tickdata]],{options})
   jQuery.fn.candleChart = function(data,options) {
     var elm = this;
     
@@ -203,7 +208,7 @@
 
     //要素を一個ずつ処理
     elm.each(function() {
-      if($(this).attr("tagName")==="CANVAS") {
+      if(jQuery(this).attr("tagName")==="CANVAS") {
         _init(this);
         if(arguments.length === 2){
           _writeCandles(this,data);
@@ -221,7 +226,7 @@
   // write Trading volume
   // 出来高の表示
   // public method
-  // Usage: $(elm).ccVolume([volumedata])
+  // Usage: jQuery(elm).ccVolume([volumedata])
   jQuery.fn.ccVolume = function(data) {
     var elm = this;
     if(!data){ return this; }
@@ -248,7 +253,7 @@
 
     //要素を一個ずつ処理
     elm.each(function() {
-      if($(this).attr("tagName")==="CANVAS") {
+      if(jQuery(this).attr("tagName")==="CANVAS") {
         _writeVolume(this,data);
       }
     });
@@ -260,14 +265,14 @@
   // write (only) candlestick
   // ローソク足の描画
   // public method
-  // Usage: $(elm).ccTick([volumedata])
+  // Usage: jQuery(elm).ccTick([volumedata])
   jQuery.fn.ccTick = function(data) {
     var elm = this;
     if(!data){ return this; }
 
     //要素を一個ずつ処理
     elm.each(function() {
-      if($(this).attr("tagName")==="CANVAS") {
+      if(jQuery(this).attr("tagName")==="CANVAS") {
         _writeCandles(this,data);
       }
     });
@@ -282,14 +287,14 @@
   //   http://github.com/MmmCurry/jquery.crSpline
   //   fork -> http://github.com/shunito/jquery.crSpline
   // public method
-  // Usage: $(elm).ccMA([volumedata],linecolor)
+  // Usage: jQuery(elm).ccMA([volumedata],linecolor)
   jQuery.fn.ccMA = function(data,color) {
     var elm = this;
     if(!data){ return this; }
 
     //要素を一個ずつ処理
     elm.each(function() {
-      if($(this).attr("tagName")==="CANVAS") {
+      if(jQuery(this).attr("tagName")==="CANVAS") {
         _writeMovingAvg(this,data,color);
       }
     });
@@ -301,13 +306,13 @@
   // clear chart
   // チャートの初期化
   // public method
-  // Usage: $(elm).ccClear()
+  // Usage: jQuery(elm).ccClear()
   jQuery.fn.ccClear = function() {
     var elm = this;
 
     //要素を一個ずつ処理
     elm.each(function() {
-      if($(this).attr("tagName")==="CANVAS") {
+      if(jQuery(this).attr("tagName")==="CANVAS") {
         _init(this);
       }
     });
