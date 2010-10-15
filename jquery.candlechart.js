@@ -83,13 +83,14 @@
     var l = st.liNum;
     for(var i =1; i <= l; i++) {
       ctx.beginPath();
+      ctx.strokeStyle = st.liColor;
       var y = _ajustXY( st.height - ( p * i * param ) - st.ofY );
       ctx.moveTo( _ajustXY(st.ofX+1) , y );
       ctx.lineTo( _ajustXY(st.width-st.ofX) , y );
-      ctx.strokeStyle = st.liColor;
       ctx.stroke();
 
       // 罫線部分の値
+      ctx.beginPath();
       ctx.strokeStyle = st.cdLineColor;
       ctx.strokeText( p*i + st.lower, st.ofX - 4, y, st.ofX);
     }
@@ -120,6 +121,34 @@
     _writeScale(ctx);
   };
 
+  // 縦罫線
+  var _writeTimeScale = function(ctx, label, d) {
+  
+    ctx.beginPath();
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = st.liColor;
+    
+    // 破線（4px）
+    var x = _ajustXY(d * cdStage + shinOffsetX);
+    var y = st.height - st.ofY-1;
+    while( y > st.ofY ) {
+      ctx.beginPath();
+      ctx.moveTo( x , _ajustXY( y ));
+      ctx.lineTo( x , _ajustXY( y - 4 ));
+      ctx.stroke();
+      console.log(y);
+      y = y-8;
+    }
+
+    // 罫線部分の値
+    ctx.beginPath();
+    ctx.strokeStyle = st.cdLineColor;
+    ctx.textBaseline = "top";
+    ctx.textAlign = "center";
+    ctx.strokeText( label, x , st.height - st.ofY +4 );
+  
+  };
+
   // ローソク一本描く
   var _writeCandle = function(ctx,s,e,h,l,d) {
       var stP = (s - st.lower) * param; // 初値
@@ -142,14 +171,19 @@
       ctx.strokeStyle = st.cdLineColor;
       ctx.fillRect( _ajustXY(d * cdStage + cdOffsetX), _ajustXY(chHeight-stP + st.ofY) , st.cdWidth, stP-enP );
       ctx.strokeRect( _ajustXY(d * cdStage + cdOffsetX), _ajustXY(chHeight-stP + st.ofY) , st.cdWidth, stP-enP );
-    };
+  };
 
   // ローソク足の描画
   var _writeCandles = function(canvas,data) {
       var ctx = canvas.getContext('2d');
       var l = data.length;
       for(var i = 0;i < l; i++){
-        _writeCandle(ctx,data[i][0],data[i][1],data[i][2],data[i][3],i);
+        if(data[i]) {
+          if(data[i][4]) {
+           _writeTimeScale(ctx, data[i][4],i);
+          }
+          _writeCandle(ctx,data[i][0],data[i][1],data[i][2],data[i][3],i);
+        }
       }
   };
 
