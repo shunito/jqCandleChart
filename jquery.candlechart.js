@@ -136,7 +136,6 @@
       ctx.moveTo( x , _ajustXY( y ));
       ctx.lineTo( x , _ajustXY( y - 4 ));
       ctx.stroke();
-      console.log(y);
       y = y-8;
     }
 
