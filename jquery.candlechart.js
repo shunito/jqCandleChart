@@ -26,13 +26,12 @@
 
   // JavaScript:The Good Parts
   var is_array = function(value) {
-    return(
+    return
       value && 
       typeof value === "object" &&
       typeof value.length === "number" &&
       typeof value.splice === "function" &&
-      !(value.propertyIsEnumerable('length'))
-    );  
+      !(value.propertyIsEnumerable('length'));  
   };
 
   // オプション設定
