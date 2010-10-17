@@ -5,7 +5,6 @@
 	<title>JQuery ローソク足</title>
 	<link href="simple.css" rel="stylesheet" type="text/css" media="screen">
 	<script src="jquery.js" type="text/javascript"></script>
-	<script src="jquery.crSpline.js" type="text/javascript"></script>
 	<script src="jquery.candlechart.js" type="text/javascript"></script>
 	<script type="text/javascript">
     $(function(){
@@ -23,6 +22,9 @@
         [120,90,75,130],
         [90,150,90,160]
       ];
+
+      var ma = [150,155,154,150,146,140,142,138,135];
+      var ma2 = [150,155];
       
       var tickData2 = [
 [8820,8930,8940,8790],
@@ -46,7 +48,7 @@
 [9540,9560,9610,9500],
 [9560,9360,9570,9360,"20"]];
             
-      var ma = [60455,62919,54666,64831,51432,56386,33614,68133,55057,55124,148943,77778,50298,49395,49305,84995,49163,41436,63481,75801];
+      var vo = [60455,62919,54666,64831,51432,56386,33614,68133,55057,55124,148943,77778,50298,49395,49305,84995,49163,41436,63481,75801];
       
       var option = {
       'width' : 600,
@@ -67,11 +69,13 @@
       };
     
       $("#cv01").candleChart(tickData2,option)
-        .ccVolume(ma);
+        .ccVolume(vo);
 
-      var cv2 = $("#cv02").candleChart(tickData).hide();
+      var cv2 = $("#cv02").candleChart(tickData);
 
-      $("#cv03").candleChart([[120,160,200,100]],{width:600}).ccVolume([100]);
+      $("#cv03").candleChart([[120,160,200,100]],{width:600})
+      .ccVolume([100,200,120,50])
+      .ccMA(ma2,"#F00");
       
       cv2.show("slow")
         .ccVolume([20,10,10,100,0,50,15,20,90])

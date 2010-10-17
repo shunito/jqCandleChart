@@ -186,33 +186,87 @@
   };
 
   // スプライン補間で移動平均線の描画
+  // from: jQuery.crSpline Copyright 2010, M. Ian Graham
+  // http://github.com/MmmCurry/jquery.crSpline
   var _writeMovingAvg = function(canvas,data,color) {
     var ctx = canvas.getContext('2d');
-    if(!jQuery.crSpline) {
-      return;
-    }
 
     var l= data.length;
-    var dotsPerSeg = cdStage;
+    var dotsPerSeg = cdStage/2;
     var points = [];
+    var res = {};
+    var seq = [];
+    var numSegments;
     var px,py;
+
+    // Catmull-Rom interpolation between p0 and p1 for previous point p_1 and later point p2
+    // http://en.wikipedia.org/wiki/Cubic_Hermite_spline#Catmull.E2.80.93Rom_spline
+    var interpolate = function (t, p_1, p0, p1, p2) {
+      return Math.floor((t * ((2 - t) * t - 1) * p_1 +
+        (t * t * (3 * t - 5) + 2) * p0 +
+        t * ((4 - 3 * t) * t + 1) * p1 +
+        (t - 1) * t * t * p2
+        ) / 2);
+    };
+
+    // Extend this p1,p2 sequence linearly to a new p3
+    var generateExtension = function (p1, p2) {
+      return [
+        p2[0] + (p2[0] - p1[0]),
+        p2[1] + (p2[1] - p1[1])
+      ];
+    };
+
+    var spline = function(t) {
+      var segNum = Math.floor(t * numSegments);
+      if (segNum === numSegments) {
+        return {
+          x: seq[seq.length-2][0],
+          y: seq[seq.length-2][1]
+        };
+      }
+      var microT = (t - segNum/numSegments) * numSegments;
+      var x = interpolate(microT,
+        seq[segNum][0],
+        seq[segNum+1][0],
+        seq[segNum+2][0],
+        seq[segNum+3][0]);
+      var y = interpolate(microT,
+        seq[segNum][1],
+        seq[segNum+1][1],
+        seq[segNum+2][1],
+        seq[segNum+3][1]);
+
+      return {
+        x: x,
+        y: y
+      };
+    };
+
     for(var i=0; i< l; i++) {
       px = i* cdStage+ shinOffsetX;
       py = Math.floor( chHeight - data[i]* param) + st.ofY;
       points.push([px,py]);
     }
-    var spline = jQuery.crSpline.buildSequence(points);
 
+    // Generate the first p_1 so the caller doesn't need to provide it
+    seq.push(generateExtension(points[1], points[0]));
+    seq = seq.concat(points);
+    // Generate the last p2 so the caller doesn't need to provide it
+    seq.push(generateExtension(seq[seq.length-2], seq[seq.length-1]));
+
+    numSegments = seq.length - 3;
+    
     ctx.lineWidth = 1;
     ctx.strokeStyle = color ? color : st.maColor;
     ctx.beginPath();
-    var pos= spline.getPos(0);
+    var pos= spline(0);
     ctx.moveTo(pos.x,pos.y);
 
     for(var i=0; i< l; i++) {
       for(var j=0; j< dotsPerSeg; j++){
         var t = (i + j/dotsPerSeg) / points.length;
-        var pos = spline.getPos(t);
+        var pos = spline(t);
         ctx.lineTo(pos.x, pos.y);
       }
     }
