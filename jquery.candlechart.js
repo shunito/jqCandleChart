@@ -265,7 +265,7 @@
 
     for(var i=0; i< l; i++) {
       for(var j=0; j< dotsPerSeg; j++){
-        var t = (i + j/dotsPerSeg) / points.length;
+        var t = (i + j/dotsPerSeg) / l;
         var pos = spline(t);
         ctx.lineTo(pos.x, pos.y);
       }
