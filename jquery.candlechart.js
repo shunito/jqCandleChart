@@ -319,6 +319,7 @@
 
     // 出来高のバーを一本表示
     var _writeVolumeBar = function(ctx, v, d) {
+      var v = v || 0;
       ctx.fillStyle = st.voColor;
       ctx.fillRect(
         _ajustXY(d * cdStage + cdOffsetX), _ajustXY( st.height - st.ofY-1) ,

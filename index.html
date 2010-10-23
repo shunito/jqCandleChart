@@ -5,50 +5,10 @@
 	<title>jQuery plugin : Candlestick Chart</title>
 	<link href="simple.css" rel="stylesheet" type="text/css" media="screen">
 	<script src="jquery.js" type="text/javascript"></script>
+	<script src="jquery.csv.js" type="text/javascript"></script>
 	<script src="jquery.candlechart.js" type="text/javascript"></script>
 	<script type="text/javascript">
     $(function(){
-    
-      // 始値、終値、高値、安値
-      // start, end, height, low
-      var tickData =[
-        [100,150,80,200],
-        [155,160,145,160,"20"],
-        [160,220,165,240],
-        [220,150,145,220],
-        ,
-        [150,120,110,160],
-        [200,200,195,220,"40"],
-        [120,90,75,130],
-        [90,150,90,160]
-      ];
-
-      var ma = [150,155,154,150,146,140,142,138,135];
-      var ma2 = [150,155];
-      
-      var tickData2 = [
-[8820,8930,8940,8790],
-[9080,9040,9090,8950],
-[9100,9100,9150,9040],
-[9200,9290,9310,9170],
-[9220,9220,9320,9200,"5"],
-[9090,9010,9110,8990],
-[9130,9090,9140,9060],
-[9090,9180,9240,9080],
-[9300,9260,9350,9250],
-[9260,9250,9280,9200,"10"],
-[9190,9470,9540,9140],
-[9560,9430,9580,9420],
-[9550,9570,9600,9500],
-[9630,9530,9650,9520],
-[9500,9520,9580,9490,"15"],
-[9370,9400,9560,9360],
-[9500,9540,9570,9480],
-[9520,9490,9560,9470],
-[9540,9560,9610,9500],
-[9560,9360,9570,9360,"20"]];
-            
-      var vo = [60455,62919,54666,64831,51432,56386,33614,68133,55057,55124,148943,77778,50298,49395,49305,84995,49163,41436,63481,75801];
       
       var option = {
       'width' : 600,
@@ -64,22 +24,41 @@
       'liColor': "#008080",
       'maColor': "#FFE",
       'liNum': 5,
-      'upper' : 9700,
-      'lower' : 8600
+      'upper' : 15000,
+      'lower' : 7000
       };
-    
-      $("#cv01").candleChart(tickData2,option)
-        .ccVolume(vo);
 
-      var cv2 = $("#cv02").candleChart(tickData);
+      $.get('n225.csv',function(data){
+        var csv = $.csv()(data);
+        var l = csv.length;
+        var tick =[];
+        var vol = [];
+        var candle = 50;
+        var r = parseInt(Math.random()*(l-candle));
 
-      $("#cv03").candleChart([[120,160,200,100]],{width:600})
-      .ccVolume([100,200,120,50])
-      .ccMA(ma2,"#F00");
+        var label = csv[r][0];
+        var month = label.split('/')[1];
+        for(var i=r; i< r+candle ; i++) {
+          label = csv[i][0];
+          var m = label.split('/')[1];
+          
+          if( m != month ) {
+            tick.push([csv[i][1],csv[i][4],csv[i][2],csv[i][3],csv[i][0]]);
+            month = m;
+          }
+          else {
+            tick.push([csv[i][1],csv[i][4],csv[i][2],csv[i][3]]);
+          }
+          vol.push(csv[i][5]);
+
+        }
       
-      cv2.show("slow")
-        .ccVolume([20,10,10,100,0,50,15,20,90])
-        .ccMA(ma,"#F00");
+      
+        $("#cv01").candleChart(tick,option)
+          .ccVolume(vol);        
+      })
+      
+    
 
     });
 	</script>
@@ -98,13 +77,6 @@
 <div class="stage">
 <canvas width="400" height="300" id="cv01"></canvas>
 </div>
-<div class="stage">
-<canvas width="400" height="300" id="cv02"></canvas>
-</div>
-<div class="stage">
-<canvas width="400" height="300" id="cv03"></canvas>
-</div>
-
 
 </article>
 </section>
