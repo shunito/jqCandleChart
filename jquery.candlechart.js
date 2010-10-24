@@ -52,7 +52,8 @@
       'maColor': "#00F",
       'liNum': 5,
       'upper' : 250,
-      'lower' : 0
+      'lower' : 0,
+      'autoScale' : false
       }, options);
 
     // 座標スケールの変換準備（縦表示領域とスケールの比を求める）
@@ -273,6 +274,28 @@
     ctx.stroke();
   };
 
+  // 下限・上限の自動設定
+  var _setScale = function(data) {
+    var l = data.length;
+    var max = Number.MIN_VALUE;
+    var min = Number.MAX_VALUE;
+
+    for(var i=0; i<l ; i++) {
+      max = Math.max(max,data[i][2]);
+      min = Math.min(min,data[i][3]);
+    }
+
+    // 上限・下限の差の1/5を余裕として上下を調整
+    var s = (max - min) / 5;
+    max = Math.floor( (max + s) / 10) * 10;
+    min = Math.floor( (min - s) / 10) * 10;
+
+    // パラメータ再設定
+    st.upper = max;
+    st.lower = min;
+    param = chHeight / (st.upper  - st.lower);
+  };
+
   // Initialize Candlestick Chart
   // チャートの初期化
   // public method
@@ -290,6 +313,11 @@
     }
     else if(arguments.length ===2){
       _setOption(arguments[1]);
+    }
+
+    // 上限・下限の自動設定
+    if(st.autoScale && data) {
+      _setScale(data);
     }
 
     //要素を一個ずつ処理
@@ -356,6 +384,11 @@
     var elm = this;
     if(!data){ return this; }
 
+    // 上限・下限の自動設定
+    if(st.autoScale) {
+      _setScale(data);
+    }
+
     //要素を一個ずつ処理
     elm.each(function() {
       if(jQuery(this).attr("tagName")==="CANVAS") {
@@ -390,7 +423,7 @@
   };
 
   // clear chart
-  // チャートの初期化
+  // チャートの画面クリア
   // public method
   // Usage: jQuery(elm).ccClear()
   jQuery.fn.ccClear = function() {
