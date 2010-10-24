@@ -324,7 +324,6 @@
       ctx.fillRect(
         _ajustXY(d * cdStage + cdOffsetX), _ajustXY( st.height - st.ofY-1) ,
             barWidth, _ajustXY(v) *-1 );
-      return v;
     };
 
     // 出来高の描画
