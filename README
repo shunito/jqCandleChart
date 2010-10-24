@@ -1,4 +1,4 @@
-- jQuery plugin : Candlestick Chart v0.1.2 -
+- jQuery plugin : Candlestick Chart v0.1.3 -
 	Javascriptと<canvas>でローソク足を表示します。
 	
 	機能
@@ -8,6 +8,7 @@
 	　・表やローソクのサイズ変更
 	　・横罫線本数の変更
 	　・表上の上限、下限の設定
+	　・上限、下限の自動計算モード
 	・出来高の表示
 	・移動平均線の表示
 	　（値は内部計算ではないので、準備次第で移動平均以外の値でも描画可能。）
