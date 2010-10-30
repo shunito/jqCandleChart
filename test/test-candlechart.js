@@ -3,12 +3,12 @@
 module("Loading");
 test("jQuery plugin:Candlestick Chart", function () {
   equals(typeof jQuery,"function", "jQuery読み込み");
-  equals(typeof jQuery("#cc1").candleChart,"function", "jqCandlechartプラグイン読み込み");
-  equals(typeof jQuery("#cc1").ccVolume,"function", "出来高表示機能");
-  equals(typeof jQuery("#cc1").ccTick,"function", "ローソク足表示機能");
-  equals(typeof jQuery("#cc1").ccMA,"function", "移動平均線表示機能");
-  equals(typeof jQuery("#cc1").ccClear,"function", "表示クリア機能");
-  equals(typeof jQuery("#cc1").ccStatus,"function", "現在の設定を取得");
+  equals(typeof jQuery("#cc1").candleChart,"function", "jQuery(obj).candleChart プラグイン読み込み");
+  equals(typeof jQuery("#cc1").ccVolume,"function", "jQuery(obj).ccVolume 出来高表示機能");
+  equals(typeof jQuery("#cc1").ccTick,"function", "jQuery(obj).ccTick ローソク足表示機能");
+  equals(typeof jQuery("#cc1").ccMA,"function", "jQuery(obj).ccMA 移動平均線表示機能");
+  equals(typeof jQuery("#cc1").ccClear,"function", "jQuery(obj).ccClear 表示クリア機能");
+  equals(typeof jQuery("#cc1").ccStatus,"function", "jQuery(obj).ccStatus 現在の設定を取得");
 });
 
 module("Options");
