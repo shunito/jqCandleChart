@@ -440,4 +440,21 @@
     return this;
   };
 
+  // ccStatus
+  // 現在のステータス等を返す。
+  // ※method chainがつながらなくなります。
+  jQuery.fn.ccStatus = function() {
+    return {
+      'obj' : this,
+      'options' : st,
+      'chHeight': chHeight,
+      'param': param,
+      'shinWidth': shinWidth,
+      'cdStage': cdStage,
+      'cdOffsetX': cdOffsetX,
+      'shinOffsetX': shinOffsetX,
+      'barWidth':barWidth
+    };
+  };
+
 })(jQuery);
