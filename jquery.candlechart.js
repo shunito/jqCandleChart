@@ -149,9 +149,9 @@
   };
 
   // ローソク一本描く
-  var _writeCandle = function(ctx,s,e,h,l,d) {
-      var stP = (s - st.lower) * param; // 初値
-      var enP = (e - st.lower) * param; // 終値
+  var _writeCandle = function(ctx,o,c,h,l,d) {
+      var opP = (o - st.lower) * param; // 初値
+      var clP = (c - st.lower) * param; // 終値
       var hiP = (h - st.lower) * param; // 高値
       var loP = (l - st.lower) * param; // 安値
 
@@ -165,11 +165,11 @@
       ctx.lineWidth = 1;
 
       // 終値が初値より高ければ白、安ければ黒で塗りつぶし
-      if( stP < enP ) { ctx.fillStyle = st.cdUpColor; }
+      if( opP < clP ) { ctx.fillStyle = st.cdUpColor; }
       else { ctx.fillStyle = st.cdDownColor; }
       ctx.strokeStyle = st.cdLineColor;
-      ctx.fillRect( _ajustXY(d * cdStage + cdOffsetX), _ajustXY(chHeight-stP + st.ofY) , st.cdWidth, stP-enP );
-      ctx.strokeRect( _ajustXY(d * cdStage + cdOffsetX), _ajustXY(chHeight-stP + st.ofY) , st.cdWidth, stP-enP );
+      ctx.fillRect( _ajustXY(d * cdStage + cdOffsetX), _ajustXY(chHeight-opP + st.ofY) , st.cdWidth, opP-clP );
+      ctx.strokeRect( _ajustXY(d * cdStage + cdOffsetX), _ajustXY(chHeight-opP + st.ofY) , st.cdWidth, opP-clP );
   };
 
   // ローソク足の描画
