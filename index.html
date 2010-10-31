@@ -23,9 +23,16 @@
       'voColor': "#E0FFFF",
       'liColor': "#008080",
       'maColor': "#FFE",
-      'liNum': 5,
+      'liNum': 6,
       'upper' : 15000,
       'lower' : 7000,
+      'autoScale' : true
+      };
+
+      var option2 = {
+      'width' : 500,
+      'height' : 250,
+      'cdWidth': 4,
       'autoScale' : true
       };
 
@@ -47,7 +54,7 @@
           
           var a = 0;
           for (var j=0 ; j < 5 && i-j >0; j++) {
-            a += parseInt(csv[i-j][2]);
+            a += parseInt(csv[i-j][4]);
           }
           avg.push( a/j );
           
@@ -64,10 +71,10 @@
         $("#cv01").candleChart(tick,option)
           .ccVolume(vol)
           .ccMA(avg,"#FFFFFF");
-      })
-      
-    
 
+        $("#cv02").candleChart(option2)
+          .ccVolume(vol).ccTick(tick);
+      })
     });
 	</script>
 </head>
@@ -75,15 +82,19 @@
 <body>
 <div id="page">
 <header>
-	<h1 id="siteName">JQuery ローソク足</h1>
+	<h1 id="siteName">jQuery plugin : Candlestick Chart</h1>
 </header>
 
 <div id="contents">
 <section id="main">
 <article>
-<h1>テスト</h1>
+<h1>ローソク足</h1>
 <div class="stage">
 <canvas width="400" height="300" id="cv01"></canvas>
+</div>
+
+<div class="stage">
+<canvas width="400" height="300" id="cv02"></canvas>
 </div>
 
 </article>

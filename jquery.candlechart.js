@@ -117,8 +117,6 @@
     ctx.lineTo( _ajustXY(st.width - st.ofX), _ajustXY(st.height - st.ofY));
     ctx.stroke();
 
-    // 横罫線
-    _writeScale(ctx);
   };
 
   // 縦罫線
@@ -174,16 +172,21 @@
 
   // ローソク足の描画
   var _writeCandles = function(canvas,data) {
-      var ctx = canvas.getContext('2d');
-      var l = data.length;
-      for(var i = 0;i < l; i++){
-        if(data[i]) {
-          if(data[i][4]) {
-           _writeTimeScale(ctx, data[i][4],i);
-          }
-          _writeCandle(ctx,data[i][0],data[i][1],data[i][2],data[i][3],i);
+    if( data.length === 0 ) { return; }
+    var ctx = canvas.getContext('2d');
+
+    // 横罫線
+    _writeScale(ctx);
+
+    var l = data.length;
+    for(var i = 0;i < l; i++){
+      if(data[i]) {
+        if(data[i][4]) {
+          _writeTimeScale(ctx, data[i][4],i);
         }
+        _writeCandle(ctx,data[i][0],data[i][1],data[i][2],data[i][3],i);
       }
+    }
   };
 
   // スプライン補間で移動平均線の描画
@@ -302,34 +305,31 @@
   // Usage: jQuery(elm).candleChart([[tickdata]],{options})
   jQuery.fn.candleChart = function(data,options) {
     var elm = this;
-    
-    // データとオプションの処理
-    // 引数が2個なら第2引数をオプションとみなす
-    if(arguments.length ===1 && is_array(arguments[0]) ) {
-      _setOption({});
+    var o = {};
+    var d = [];
+
+    // 引数がひとつで行列ならデータ、オブジェクトならオプションとみなす
+    if(arguments.length === 1 ) {
+      if(is_array(arguments[0])) { d = arguments[0]; }
+      else { o = arguments[0]; }
     }
-    else if(arguments.length ===1 && typeof arguments[0] === "object"){
-      _setOption(arguments[0]);
-    }
-    else if(arguments.length ===2){
-      _setOption(arguments[1]);
+    else {
+      // そうでなければデータとオブジェクトの順
+      d = data;
+      o = options;
     }
 
-    // 上限・下限の自動設定
-    if(st.autoScale && data) {
-      _setScale(data);
+    // オプションと下限・上限設定
+    _setOption(o);
+    if(st.autoScale && d.length > 1 ) {
+      _setScale(d);
     }
 
     //要素を一個ずつ処理
     elm.each(function() {
       if(jQuery(this).attr("tagName")==="CANVAS") {
         _init(this);
-        if(arguments.length === 2){
-          _writeCandles(this,data);
-        }
-        else if(arguments.length ===1 && is_array(arguments[0])){
-          _writeCandles(this,data);
-        }
+        _writeCandles(this,d);
       }
     });
 
