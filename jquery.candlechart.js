@@ -246,7 +246,7 @@
 
     for(var i=0; i< l; i++) {
       px = i* cdStage+ shinOffsetX;
-      py = Math.floor( chHeight - data[i]* param) + st.ofY;
+      py = Math.floor( chHeight - (data[i] - st.lower)* param) + st.ofY;
       points.push([px,py]);
     }
 
@@ -276,8 +276,6 @@
 
   // 下限・上限の自動設定
   var _setScale = function(data) {
-    if(!data){ return; }
-
     var l = data.length;
     var max = Number.MIN_VALUE;
     var min = Number.MAX_VALUE;
@@ -440,23 +438,6 @@
 
     //method chain
     return this;
-  };
-
-  // ccStatus
-  // 現在のステータス等を返す。
-  // ※method chainがつながらなくなります。
-  jQuery.fn.ccStatus = function() {
-    return {
-      'obj' : this,
-      'options' : st,
-      'chHeight': chHeight,
-      'param': param,
-      'shinWidth': shinWidth,
-      'cdStage': cdStage,
-      'cdOffsetX': cdOffsetX,
-      'shinOffsetX': shinOffsetX,
-      'barWidth':barWidth
-    };
   };
 
 })(jQuery);

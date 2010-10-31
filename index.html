@@ -29,11 +29,12 @@
       'autoScale' : true
       };
 
-      $.get('n225.csv',function(data){
+      $.get('./n225.csv',function(data){
         var csv = $.csv()(data);
         var l = csv.length;
         var tick =[];
         var vol = [];
+        var avg = [];
         var candle = 50;
         var r = parseInt(Math.random()*(l-candle));
 
@@ -43,6 +44,12 @@
           label = csv[i][0];
           var m = label.split('/')[1];
           var v = csv[i][5] || 0;
+          
+          var a = 0;
+          for (var j=0 ; j < 5 && i-j >0; j++) {
+            a += parseInt(csv[i-j][2]);
+          }
+          avg.push( a/j );
           
           if( m != month ) {
             tick.push([csv[i][1],csv[i][4],csv[i][2],csv[i][3],csv[i][0]]);
@@ -54,9 +61,9 @@
           vol.push(v);
         }
       
-      
         $("#cv01").candleChart(tick,option)
-          .ccVolume(vol);        
+          .ccVolume(vol)
+          .ccMA(avg,"#FFFFFF");
       })
       
     
