@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>Demo - jQuery plugin : Candlestick Chart</title>
+	<link href="simple.css" rel="stylesheet" type="text/css" media="screen">
+	<script src="jquery.js" type="text/javascript"></script>
+	<script src="jquery.csv.js" type="text/javascript"></script>
+	<script src="jquery.candlechart.js" type="text/javascript"></script>
+	<script type="text/javascript">
+    $(function(){
+      
+      var option = {
+      'width' : 600,
+      'height' : 400,
+      'ofX': 40,
+      'ofY': 30,
+      'bgColor': "#2F4F4F",
+      'cdWidth': 5,
+      'cdLineColor': "#FFF",
+      'cdUpColor': "#FF4500",
+      'cdDownColor': "#00CED1",
+      'voColor': "#E0FFFF",
+      'liColor': "#008080",
+      'maColor': "#FFE",
+      'liNum': 6,
+      'upper' : 15000,
+      'lower' : 7000,
+      'autoScale' : true
+      };
+
+      var option2 = {
+      'width' : 500,
+      'height' : 250,
+      'cdWidth': 4,
+      'autoScale' : true
+      };
+
+      $.get('./n225.csv',function(data){
+        var csv = $.csv()(data);
+        var l = csv.length;
+        var tick =[];
+        var vol = [];
+        var avg = [];
+        var candle = 50;
+        var r = parseInt(Math.random()*(l-candle));
+
+        var label = csv[r][0];
+        var month = label.split('/')[1];
+        for(var i=r; i< r+candle ; i++) {
+          label = csv[i][0];
+          var m = label.split('/')[1];
+          var v = csv[i][5] || 0;
+          
+          // 5日単純移動平均　手抜きぎみ
+          var a = 0;
+          for (var j=0 ; j < 5 && i-j >0; j++) {
+            a += parseInt(csv[i-j][4]);
+          }
+          avg.push( a/j );
+          
+          if( m != month ) {
+            tick.push([csv[i][1],csv[i][4],csv[i][2],csv[i][3],csv[i][0]]);
+            month = m;
+          }
+          else {
+            tick.push([csv[i][1],csv[i][4],csv[i][2],csv[i][3]]);
+          }
+          vol.push(v);
+        }
+      
+        $("#cv01").candleChart(tick,option)
+          .ccVolume(vol)
+          .ccMA(avg,"#FFFFFF");
+
+        $("#cv02").candleChart(option2)
+          .ccVolume(vol).ccTick(tick);
+
+      })
+    });
+	</script>
+</head>
+
+<body>
+<div id="page">
+<header>
+	<h1 id="siteName">Demo - jQuery plugin : Candlestick Chart</h1>
+</header>
+
+<div id="contents">
+<section id="main">
+<article>
+<h1>jqCandlechartのデモ</h1>
+<p style="text-align:right;font-size:80%;"><a href="index.html">戻る</a></p>
+<p>日経225先物の2007年〜2010年9月末までのデータ(CSV形式)を読み込んで、ローソク足と出来高、5日移動平均線をランダムな期間で50本表示します。</p>
+<div class="stage">
+<canvas width="400" height="300" id="cv01"></canvas>
+</div>
+<p>※Google Chromeの場合、デフォルトではセキュリティ上の問題でローカルのファイルにアクセス出来ないため、ローカル環境では動きません。<br>
+Chromeの起動オプションに「–allow-file-access-from-files」を追加することで動作します。
+</p>
+
+<div class="stage">
+<canvas width="400" height="300" id="cv02"></canvas>
+</div>
+
+</article>
+</section>
+<aside></aside>
+</div>
+
+<footer>
+	<p class="copyright">Copyright &copy; Shunsuke Ito All Rights Reserved.</p>
+</footer>
+</div>
+</body>
+</html>

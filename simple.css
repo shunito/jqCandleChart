@@ -134,11 +134,45 @@ header {
 
 #contents {
   margin:20px;
+  line-height:1.4;
+}
+
+#contents h1{
+  font-size:120%;
+  line-height:1.4;
+  margin-bottom:0.5em;
+  border-bottom:2px solid #CCC;
+}
+
+#contents h2{
+  font-size:110%;
+  line-height:1.4;
+  margin-bottom:0.5em;
+  margin-top:2em;
+  border-bottom:1px solid #CCC;
+}
+
+
+#contents p{
+  margin-bottom:1em;
+}
+
+#contents p.code{
+  margin:1em;
+  background-color:#000;
+  color:#FFF;
+  padding:10px;
+  font-size:90%;
+}
+
+#contents p.code span{
+  color: #FF8;
 }
 
 div.stage {
   background-color:#EEE;
   padding:10px;
+  margin-bottom:10px;
 }
 
 footer {
@@ -150,4 +184,20 @@ footer {
 p.copyright {
   text-align:right;
   font-size:80%;
+}
+
+table.simple {
+  border:1px solid #999;
+  margin:1em;
+}
+
+table.simple th,
+table.simple td{
+  border:1px solid #999;
+  padding:4px;
+  font-size:84%;
+}
+
+table.simple thead th{
+  background-color:#eee;
 }
