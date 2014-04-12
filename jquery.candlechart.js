@@ -327,7 +327,7 @@
 
     //要素を一個ずつ処理
     elm.each(function() {
-      if(jQuery(this).attr("tagName")==="CANVAS") {
+      if(jQuery(this).prop("tagName") === "CANVAS") {
         _init(this);
         _writeCandles(this,d);
       }
